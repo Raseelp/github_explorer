@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/github_user.dart';
 import '../utils/app_colors.dart';
+import '../utils/format_count.dart';
 
 class UserProfileCard extends StatelessWidget {
   final GithubUser user;
@@ -25,15 +26,19 @@ class UserProfileCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          CircleAvatar(
-            radius: 42,
-            backgroundColor: AppColors.grey200,
-            backgroundImage:
-                user.avatarUrl != null ? NetworkImage(user.avatarUrl!) : null,
-            onBackgroundImageError: user.avatarUrl != null ? (_, __) {} : null,
-            child: user.avatarUrl == null
-                ? const Icon(Icons.person, size: 40, color: AppColors.grey400)
-                : null,
+          Container(
+            padding: const EdgeInsets.all(5),
+            decoration: const BoxDecoration(color: AppColors.primaryTint, shape: BoxShape.circle),
+            child: CircleAvatar(
+              radius: 42,
+              backgroundColor: AppColors.grey200,
+              backgroundImage:
+                  user.avatarUrl != null ? NetworkImage(user.avatarUrl!) : null,
+              onBackgroundImageError: user.avatarUrl != null ? (_, __) {} : null,
+              child: user.avatarUrl == null
+                  ? const Icon(Icons.person, size: 40, color: AppColors.grey400)
+                  : null,
+            ),
           ),
           const SizedBox(height: 14),
           Text(
@@ -88,8 +93,8 @@ class UserProfileCard extends StatelessWidget {
     return Column(
       children: [
         Text(
-          _format(value),
-          style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
+          formatCount(value),
+          style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w800, color: AppColors.primary),
         ),
         const SizedBox(height: 2),
         Text(label, style: const TextStyle(fontSize: 12, color: AppColors.grey600)),
@@ -99,12 +104,5 @@ class UserProfileCard extends StatelessWidget {
 
   Widget _divider() {
     return Container(height: 28, width: 1, color: AppColors.grey200);
-  }
-
-  String _format(int value) {
-    if (value >= 1000) {
-      return '${(value / 1000).toStringAsFixed(1)}k';
-    }
-    return '$value';
   }
 }

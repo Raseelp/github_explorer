@@ -29,6 +29,13 @@ class ProfileController extends GetxController {
     update();
   }
 
+  void reset() {
+    ++_requestId;
+    state = ViewState.idle;
+    user = null;
+    update();
+  }
+
   Future<void> search(String username) async {
     username = username.trim();
     if (username.isEmpty) return;

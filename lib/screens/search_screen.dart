@@ -50,6 +50,9 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   void _onTextChanged() {
+    if (_textController.text.isEmpty) {
+      _controller.reset();
+    }
     _updateSuggestions();
     if (_focusNode.hasFocus) {
       _showOverlay();
@@ -58,12 +61,10 @@ class _SearchScreenState extends State<SearchScreen> {
 
   void _updateSuggestions() {
     final query = _textController.text.trim().toLowerCase();
-    if (query.isEmpty) {
-      _suggestions = [];
-      return;
-    }
-    _suggestions =
-        _controller.recentSearches.where((u) => u.toLowerCase().contains(query)).toList();
+    final recent = _controller.recentSearches;
+    _suggestions = query.isEmpty
+        ? recent
+        : recent.where((u) => u.toLowerCase().contains(query)).toList();
   }
 
   void _runSearch(String username) {
@@ -138,9 +139,22 @@ class _SearchScreenState extends State<SearchScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'GitHub Explorer',
-                  style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800),
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryTint,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(Icons.travel_explore_rounded, color: AppColors.primary, size: 22),
+                    ),
+                    const SizedBox(width: 10),
+                    const Text(
+                      'GitHub Explorer',
+                      style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 4),
                 const Text(
@@ -154,8 +168,17 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
                 const SizedBox(height: 22),
                 Expanded(
-                  child: GetBuilder<ProfileController>(
-                    builder: (c) => _buildBody(c),
+                  child: AnimatedBuilder(
+                    animation: _focusNode,
+                    builder: (context, _) => GetBuilder<ProfileController>(
+                      builder: (c) => AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 220),
+                        child: KeyedSubtree(
+                          key: ValueKey('${c.state}_${_focusNode.hasFocus}'),
+                          child: _buildBody(c),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -240,21 +263,39 @@ class _SearchScreenState extends State<SearchScreen> {
       );
     }
 
-    if (c.recentSearches.isEmpty) {
-      return const Center(
-        child: Text(
-          'Try searching for a username\nlike "octocat"',
-          textAlign: TextAlign.center,
-          style: TextStyle(color: AppColors.grey500, height: 1.5),
+    if (c.recentSearches.isEmpty || _focusNode.hasFocus) {
+      return Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 84,
+              height: 84,
+              decoration: const BoxDecoration(color: AppColors.primaryTint, shape: BoxShape.circle),
+              child: const Icon(Icons.person_search_outlined, size: 34, color: AppColors.primary),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'Try searching for a username\nlike "octocat"',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: AppColors.grey500, height: 1.5),
+            ),
+          ],
         ),
       );
     }
 
     return ListView(
       children: [
-        const Text(
-          'Recent searches',
-          style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.grey700),
+        const Row(
+          children: [
+            Icon(Icons.history_rounded, size: 16, color: AppColors.primary),
+            SizedBox(width: 6),
+            Text(
+              'Recent searches',
+              style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.grey700),
+            ),
+          ],
         ),
         const SizedBox(height: 10),
         Wrap(

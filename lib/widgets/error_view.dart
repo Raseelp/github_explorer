@@ -21,14 +21,45 @@ class ErrorView extends StatelessWidget {
     }
   }
 
+  Color get _iconColor {
+    switch (type) {
+      case ErrorType.notFound:
+        return AppColors.errorNotFoundIcon;
+      case ErrorType.network:
+        return AppColors.errorNetworkIcon;
+      case ErrorType.timeout:
+        return AppColors.errorTimeoutIcon;
+      case ErrorType.unknown:
+        return AppColors.errorUnknownIcon;
+    }
+  }
+
+  Color get _tint {
+    switch (type) {
+      case ErrorType.notFound:
+        return AppColors.errorNotFoundTint;
+      case ErrorType.network:
+        return AppColors.errorNetworkTint;
+      case ErrorType.timeout:
+        return AppColors.errorTimeoutTint;
+      case ErrorType.unknown:
+        return AppColors.errorUnknownTint;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(_icon, size: 46, color: AppColors.grey400),
-          const SizedBox(height: 12),
+          Container(
+            width: 84,
+            height: 84,
+            decoration: BoxDecoration(color: _tint, shape: BoxShape.circle),
+            child: Icon(_icon, size: 34, color: _iconColor),
+          ),
+          const SizedBox(height: 16),
           Text(message, style: const TextStyle(color: AppColors.grey600)),
         ],
       ),

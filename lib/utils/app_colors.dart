@@ -4,6 +4,7 @@ class AppColors {
   AppColors._();
 
   static const primary = Color(0xFF2F6FED);
+  static const primaryTint = Color(0x1A2F6FED);
   static const background = Color(0xFFF5F6FA);
   static const surface = Colors.white;
   static const textDark = Colors.black87;
@@ -19,6 +20,15 @@ class AppColors {
   static const shadowSoft = Color(0x08000000);
   static const shadowFaint = Color(0x07000000);
   static const shadowToggle = Color(0x0F000000);
+
+  static const errorNotFoundIcon = Color(0xFFFFA726);
+  static const errorNotFoundTint = Color(0xFFFFF3E0);
+  static const errorNetworkIcon = Color(0xFFEF5350);
+  static const errorNetworkTint = Color(0xFFFFEBEE);
+  static const errorTimeoutIcon = Color(0xFF78909C);
+  static const errorTimeoutTint = Color(0xFFECEFF1);
+  static const errorUnknownIcon = grey500;
+  static const errorUnknownTint = grey100;
 
   static const langDart = Color(0xFF00B4AB);
   static const langKotlin = Color(0xFFA97BFF);

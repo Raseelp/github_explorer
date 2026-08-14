@@ -34,10 +34,18 @@ class _RepoScreenState extends State<RepoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.username)),
+      appBar: AppBar(
+        title: Text(widget.username, style: const TextStyle(fontWeight: FontWeight.w700)),
+      ),
       body: GetBuilder<RepoController>(
         tag: widget.username,
-        builder: (c) => _buildBody(c),
+        builder: (c) => AnimatedSwitcher(
+          duration: const Duration(milliseconds: 220),
+          child: KeyedSubtree(
+            key: ValueKey(c.state),
+            child: _buildBody(c),
+          ),
+        ),
       ),
     );
   }
@@ -52,8 +60,20 @@ class _RepoScreenState extends State<RepoScreen> {
     }
 
     if (c.repos.isEmpty) {
-      return const Center(
-        child: Text('No repositories found', style: TextStyle(color: AppColors.grey600)),
+      return Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 84,
+              height: 84,
+              decoration: const BoxDecoration(color: AppColors.primaryTint, shape: BoxShape.circle),
+              child: const Icon(Icons.folder_off_outlined, size: 34, color: AppColors.primary),
+            ),
+            const SizedBox(height: 16),
+            const Text('No repositories found', style: TextStyle(color: AppColors.grey600)),
+          ],
+        ),
       );
     }
 

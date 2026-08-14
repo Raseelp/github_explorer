@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/github_repo.dart';
 import '../utils/app_colors.dart';
+import '../utils/format_count.dart';
 import '../utils/time_ago.dart';
 
 class RepoTile extends StatelessWidget {
@@ -10,9 +11,13 @@ class RepoTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final accent = repo.language != null && repo.language!.isNotEmpty
+        ? _langColor(repo.language!)
+        : AppColors.grey200;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.fromLTRB(13, 16, 16, 16),
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(14),
@@ -37,7 +42,11 @@ class RepoTile extends StatelessWidget {
               repo.description!,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontSize: 13.5, color: AppColors.grey700, height: 1.35),
+              style: const TextStyle(
+                fontSize: 13.5,
+                color: AppColors.grey700,
+                height: 1.35,
+              ),
             ),
           ],
           const SizedBox(height: 12),
@@ -48,22 +57,32 @@ class RepoTile extends StatelessWidget {
                   width: 10,
                   height: 10,
                   decoration: BoxDecoration(
-                    color: _langColor(repo.language!),
+                    color: accent,
                     shape: BoxShape.circle,
                   ),
                 ),
                 const SizedBox(width: 6),
                 Text(
                   repo.language!,
-                  style: const TextStyle(fontSize: 12.5, color: AppColors.grey700),
+                  style: const TextStyle(
+                    fontSize: 12.5,
+                    color: AppColors.grey700,
+                  ),
                 ),
                 const SizedBox(width: 16),
               ],
-              const Icon(Icons.star_border_rounded, size: 16, color: AppColors.grey500),
+              const Icon(
+                Icons.star_border_rounded,
+                size: 16,
+                color: AppColors.grey500,
+              ),
               const SizedBox(width: 3),
               Text(
-                '${repo.stars}',
-                style: const TextStyle(fontSize: 12.5, color: AppColors.grey700),
+                formatCount(repo.stars),
+                style: const TextStyle(
+                  fontSize: 12.5,
+                  color: AppColors.grey700,
+                ),
               ),
               const Spacer(),
               Text(
