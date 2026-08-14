@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/github_user.dart';
+import '../utils/app_colors.dart';
 
 class UserProfileCard extends StatelessWidget {
   final GithubUser user;
@@ -12,13 +13,13 @@ class UserProfileCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(18),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: AppColors.shadow,
             blurRadius: 16,
-            offset: const Offset(0, 6),
+            offset: Offset(0, 6),
           ),
         ],
       ),
@@ -26,12 +27,12 @@ class UserProfileCard extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 42,
-            backgroundColor: Colors.grey.shade200,
+            backgroundColor: AppColors.grey200,
             backgroundImage:
                 user.avatarUrl != null ? NetworkImage(user.avatarUrl!) : null,
             onBackgroundImageError: user.avatarUrl != null ? (_, __) {} : null,
             child: user.avatarUrl == null
-                ? Icon(Icons.person, size: 40, color: Colors.grey.shade400)
+                ? const Icon(Icons.person, size: 40, color: AppColors.grey400)
                 : null,
           ),
           const SizedBox(height: 14),
@@ -43,14 +44,14 @@ class UserProfileCard extends StatelessWidget {
           const SizedBox(height: 2),
           Text(
             '@${user.login}',
-            style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
+            style: const TextStyle(fontSize: 14, color: AppColors.grey600),
           ),
           if (user.bio != null && user.bio!.isNotEmpty) ...[
             const SizedBox(height: 12),
             Text(
               user.bio!,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 14, color: Colors.grey.shade700, height: 1.4),
+              style: const TextStyle(fontSize: 14, color: AppColors.grey700, height: 1.4),
             ),
           ],
           if (user.location != null && user.location!.isNotEmpty) ...[
@@ -58,11 +59,11 @@ class UserProfileCard extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.place_outlined, size: 15, color: Colors.grey.shade500),
+                const Icon(Icons.place_outlined, size: 15, color: AppColors.grey500),
                 const SizedBox(width: 4),
                 Text(
                   user.location!,
-                  style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
+                  style: const TextStyle(fontSize: 13, color: AppColors.grey600),
                 ),
               ],
             ),
@@ -91,13 +92,13 @@ class UserProfileCard extends StatelessWidget {
           style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
         ),
         const SizedBox(height: 2),
-        Text(label, style: TextStyle(fontSize: 12, color: Colors.grey.shade600)),
+        Text(label, style: const TextStyle(fontSize: 12, color: AppColors.grey600)),
       ],
     );
   }
 
   Widget _divider() {
-    return Container(height: 28, width: 1, color: Colors.grey.shade200);
+    return Container(height: 28, width: 1, color: AppColors.grey200);
   }
 
   String _format(int value) {

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../bindings/repo_binding.dart';
 import '../controllers/profile_controller.dart';
+import '../utils/app_colors.dart';
 import '../utils/view_state.dart';
+import '../widgets/error_view.dart';
 import '../widgets/user_profile_card.dart';
 import 'repos_screen.dart';
 
@@ -91,19 +93,19 @@ class _SearchScreenState extends State<SearchScreen> {
             child: Material(
               elevation: 6,
               borderRadius: BorderRadius.circular(14),
-              color: Colors.white,
+              color: AppColors.surface,
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxHeight: 240),
                 child: ListView.separated(
                   padding: const EdgeInsets.symmetric(vertical: 6),
                   shrinkWrap: true,
                   itemCount: _suggestions.length,
-                  separatorBuilder: (_, __) => Divider(height: 1, color: Colors.grey.shade100),
+                  separatorBuilder: (_, __) => const Divider(height: 1, color: AppColors.grey100),
                   itemBuilder: (context, i) {
                     final username = _suggestions[i];
                     return ListTile(
                       dense: true,
-                      leading: Icon(Icons.history, size: 18, color: Colors.grey.shade500),
+                      leading: const Icon(Icons.history, size: 18, color: AppColors.grey500),
                       title: Text(username, style: const TextStyle(fontSize: 14)),
                       onTap: () => _runSearch(username),
                     );
@@ -141,9 +143,9 @@ class _SearchScreenState extends State<SearchScreen> {
                   style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800),
                 ),
                 const SizedBox(height: 4),
-                Text(
+                const Text(
                   'Search any GitHub profile',
-                  style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
+                  style: TextStyle(fontSize: 14, color: AppColors.grey600),
                 ),
                 const SizedBox(height: 20),
                 CompositedTransformTarget(
@@ -177,7 +179,7 @@ class _SearchScreenState extends State<SearchScreen> {
             decoration: InputDecoration(
               hintText: 'Enter a username',
               filled: true,
-              fillColor: Colors.white,
+              fillColor: AppColors.surface,
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),
@@ -188,14 +190,14 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
         const SizedBox(width: 10),
         Material(
-          color: Theme.of(context).colorScheme.primary,
+          color: AppColors.primary,
           borderRadius: BorderRadius.circular(14),
           child: InkWell(
             borderRadius: BorderRadius.circular(14),
             onTap: _submit,
             child: const Padding(
               padding: EdgeInsets.all(14),
-              child: Icon(Icons.search, color: Colors.white),
+              child: Icon(Icons.search, color: AppColors.surface),
             ),
           ),
         ),
@@ -209,16 +211,7 @@ class _SearchScreenState extends State<SearchScreen> {
     }
 
     if (c.state == ViewState.error) {
-      return Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.error_outline_rounded, size: 46, color: Colors.grey.shade400),
-            const SizedBox(height: 12),
-            Text(c.errorMessage, style: TextStyle(color: Colors.grey.shade600)),
-          ],
-        ),
-      );
+      return ErrorView(type: c.errorType, message: c.errorMessage);
     }
 
     if (c.state == ViewState.data && c.user != null) {
@@ -248,20 +241,20 @@ class _SearchScreenState extends State<SearchScreen> {
     }
 
     if (c.recentSearches.isEmpty) {
-      return Center(
+      return const Center(
         child: Text(
           'Try searching for a username\nlike "octocat"',
           textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.grey.shade500, height: 1.5),
+          style: TextStyle(color: AppColors.grey500, height: 1.5),
         ),
       );
     }
 
     return ListView(
       children: [
-        Text(
+        const Text(
           'Recent searches',
-          style: TextStyle(fontWeight: FontWeight.w600, color: Colors.grey.shade700),
+          style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.grey700),
         ),
         const SizedBox(height: 10),
         Wrap(
@@ -269,10 +262,10 @@ class _SearchScreenState extends State<SearchScreen> {
           runSpacing: 8,
           children: c.recentSearches.map((u) {
             return ActionChip(
-              avatar: Icon(Icons.history, size: 16, color: Colors.grey.shade600),
+              avatar: const Icon(Icons.history, size: 16, color: AppColors.grey600),
               label: Text(u),
-              backgroundColor: Colors.white,
-              side: BorderSide(color: Colors.grey.shade200),
+              backgroundColor: AppColors.surface,
+              side: const BorderSide(color: AppColors.grey200),
               onPressed: () => _runSearch(u),
             );
           }).toList(),

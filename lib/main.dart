@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'bindings/initial_binding.dart';
 import 'screens/search_screen.dart';
+import 'utils/app_colors.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,18 +18,18 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
-        colorSchemeSeed: const Color(0xFF2F6FED),
-        scaffoldBackgroundColor: const Color(0xFFF5F6FA),
+        colorSchemeSeed: AppColors.primary,
+        scaffoldBackgroundColor: AppColors.background,
         appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFFF5F6FA),
+          backgroundColor: AppColors.background,
           elevation: 0,
-          foregroundColor: Colors.black87,
+          foregroundColor: AppColors.textDark,
           centerTitle: false,
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF2F6FED),
-            foregroundColor: Colors.white,
+            backgroundColor: AppColors.primary,
+            foregroundColor: AppColors.surface,
           ),
         ),
       ),

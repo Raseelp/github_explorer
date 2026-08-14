@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/repo_controller.dart';
+import '../utils/app_colors.dart';
 import '../utils/view_state.dart';
+import '../widgets/error_view.dart';
 import '../widgets/repo_tile.dart';
 
 class RepoScreen extends StatefulWidget {
@@ -46,21 +48,12 @@ class _RepoScreenState extends State<RepoScreen> {
     }
 
     if (c.state == ViewState.error) {
-      return Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.error_outline_rounded, size: 46, color: Colors.grey.shade400),
-            const SizedBox(height: 12),
-            Text(c.errorMessage, style: TextStyle(color: Colors.grey.shade600)),
-          ],
-        ),
-      );
+      return ErrorView(type: c.errorType, message: c.errorMessage);
     }
 
     if (c.repos.isEmpty) {
-      return Center(
-        child: Text('No repositories found', style: TextStyle(color: Colors.grey.shade600)),
+      return const Center(
+        child: Text('No repositories found', style: TextStyle(color: AppColors.grey600)),
       );
     }
 
@@ -72,7 +65,7 @@ class _RepoScreenState extends State<RepoScreen> {
             children: [
               Text(
                 '${c.repos.length} repositories',
-                style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
+                style: const TextStyle(color: AppColors.grey600, fontSize: 13),
               ),
               const Spacer(),
               _sortToggle(c),
@@ -94,7 +87,7 @@ class _RepoScreenState extends State<RepoScreen> {
     return Container(
       padding: const EdgeInsets.all(3),
       decoration: BoxDecoration(
-        color: Colors.grey.shade200,
+        color: AppColors.grey200,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
@@ -114,18 +107,16 @@ class _RepoScreenState extends State<RepoScreen> {
         duration: const Duration(milliseconds: 150),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
-          color: selected ? Colors.white : Colors.transparent,
+          color: selected ? AppColors.surface : Colors.transparent,
           borderRadius: BorderRadius.circular(8),
-          boxShadow: selected
-              ? [BoxShadow(color: Colors.black.withValues(alpha: 0.06), blurRadius: 4)]
-              : null,
+          boxShadow: selected ? const [BoxShadow(color: AppColors.shadowToggle, blurRadius: 4)] : null,
         ),
         child: Text(
           label,
           style: TextStyle(
             fontSize: 12.5,
             fontWeight: FontWeight.w600,
-            color: selected ? Colors.black87 : Colors.grey.shade600,
+            color: selected ? AppColors.textDark : AppColors.grey600,
           ),
         ),
       ),
